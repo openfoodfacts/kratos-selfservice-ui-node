@@ -1,21 +1,10 @@
 const i18next = require('i18next');
 const HandlebarsI18n = require("handlebars-i18n");
 HandlebarsI18n.init();
+import resources from "./i18n/translations";
 
 i18next.init({
-    // can eventually use json files
-	resources : {
-        "en" : {
-            translation : {
-                "Name": "Name",
-            }
-        },
-        "fr" : {
-            translation: {
-                "Name": "Nom",
-           }
-        }
-    },
+	resources,
     fallbackLng: "en",
     lng : getLang()
 });
