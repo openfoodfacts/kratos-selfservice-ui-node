@@ -1,6 +1,5 @@
 const i18next = require('i18next');
 const HandlebarsI18n = require("handlebars-i18n");
-HandlebarsI18n.init();
 import resources from "./i18n/messages";
 
 i18next.init({
@@ -33,5 +32,8 @@ function getLang(){
     }
     
 }
+
+
+HandlebarsI18n.init();
 
 export default i18next;
