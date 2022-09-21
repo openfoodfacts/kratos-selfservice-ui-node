@@ -6,4 +6,4 @@ const messages = {
     fr : {translations : { ...fr }},
 };
 
-export default translations;
+export default messages;
