@@ -2,8 +2,8 @@ import en from "./en.json";
 import fr from "./fr.json";
 
 const messages = {
-    en : {translations : { ...en }},
-    fr : {translations : { ...fr }},
+    en : {translation : { ...en }},
+    fr : {translation : { ...fr }},
 };
 
 export default messages;
