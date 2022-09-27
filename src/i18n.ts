@@ -5,7 +5,7 @@ import resources from "./i18n/messages";
 i18next.init({
 	resources,
     fallbackLng: "fr",
-    lng : "fr"
+    lng : getLang()
 });
 
 //get lang from accept language header or ln param from url
@@ -32,7 +32,6 @@ function getLang(){
     }
     
 }
-
 
 HandlebarsI18n.init();
 
