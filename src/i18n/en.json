@@ -1,3 +1,5 @@
 {
-    "Password" : "Password"
+    "Password" : "Password",
+    "Property email is missing." : "Property email is missing.",
+    "Property password is missing." : "Property password is missing."
 }

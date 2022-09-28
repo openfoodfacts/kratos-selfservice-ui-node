@@ -4,8 +4,8 @@ import resources from "./i18n/messages";
 
 i18next.init({
 	resources,
-    fallbackLng: "fr",
-    lng : getLang()
+    fallbackLng: "en",
+    lng : "en"
 });
 
 //get lang from accept language header or ln param from url
@@ -15,7 +15,6 @@ function getLang(){
        //check for accept-language header
         const acceptln = window.navigator.language;
         if(acceptln != null){
-            console.log(`Accept ln is  ${acceptln}`)
             return acceptln;
         }
 
@@ -24,7 +23,6 @@ function getLang(){
         const urlParams = new URLSearchParams(queryString);
         if(urlParams.has('ln')){
             const ln = urlParams.get('ln');
-            console.log(`Ln param is ${acceptln}`)
             return ln;
         }
 
