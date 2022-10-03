@@ -3,7 +3,6 @@ import express, { Request, Response } from "express"
 import handlebars from "express-handlebars"
 import * as fs from "fs"
 import * as https from "https"
-import "./i18n"
 
 import { middleware as middlewareLogger } from "./pkg/logger"
 import { toUiNodePartial } from "./pkg/ui"
@@ -21,10 +20,33 @@ import {
   registerWelcomeRoute,
 } from "./routes"
 
+const i18next = require('i18next')
+const i18nextMiddleware = require('i18next-http-middleware')
+const Backend = require('i18next-fs-backend')
+const HandlebarsI18n = require("handlebars-i18n");
+
 const app = express()
+
+i18next
+  .use(Backend)
+  // .use(languageDetector)
+  .use(i18nextMiddleware.LanguageDetector)
+  .init({
+    // debug: true,
+    backend: {
+      // eslint-disable-next-line no-path-concat
+      loadPath: __dirname + '/i18n/{{lng}}/{{ns}}.json'
+    },
+    fallbackLng: 'en',
+    // nonExplicitSupportedLngs: true,
+    // supportedLngs: ['en', 'fr'],
+    load: 'languageOnly',
+  })
 
 app.use(middlewareLogger)
 app.set("view engine", "hbs")
+
+HandlebarsI18n.init();
 
 app.engine(
   "hbs",
@@ -52,6 +74,8 @@ registerSettingsRoute(app)
 registerVerificationRoute(app)
 registerWelcomeRoute(app)
 registerErrorRoute(app)
+
+app.use(i18nextMiddleware.handle(i18next))
 
 app.get("/", (req: Request, res: Response) => {
   res.redirect("welcome", 303)
