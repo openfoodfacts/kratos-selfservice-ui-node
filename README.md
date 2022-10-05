@@ -1,6 +1,6 @@
 # OpenFoodFacts i18n Development
 ```shell script
-#Start ory kratos
+#Start Ory Kratos Quickstart
 git clone https://github.com/ory/kratos.git
 cd kratos
 git checkout v0.10.1
