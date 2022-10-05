@@ -32,37 +32,42 @@ i18next
   // .use(languageDetector)
   .use(i18nextMiddleware.LanguageDetector)
   .init({
-    // debug: true,
+    debug: true,
     backend: {
       // eslint-disable-next-line no-path-concat
       loadPath: __dirname + '/i18n/{{lng}}/{{ns}}.json'
     },
     fallbackLng: 'en',
+    preload: ['en', 'fr'],
     // nonExplicitSupportedLngs: true,
     // supportedLngs: ['en', 'fr'],
     load: 'languageOnly',
+    //detection: {order: ['querystring', 'cookie']}
   })
 
 app.use(middlewareLogger)
 app.set("view engine", "hbs")
+app.use(i18nextMiddleware.handle(i18next))
 
-HandlebarsI18n.init();
+let hbs =   handlebars({
+  extname: "hbs",
+  layoutsDir: `${__dirname}/../views/layouts/`,
+  partialsDir: `${__dirname}/../views/partials/`,
+  defaultLayout: "main",
+  helpers: {
+    ...require("handlebars-helpers")(),
+    jsonPretty: (context: any) => JSON.stringify(context, null, 2),
+    onlyNodes: filterNodesByGroups,
+    toUiNodePartial,
+    getNodeLabel: getNodeLabel,
+  },
+})
+
+HandlebarsI18n.init(hbs);
 
 app.engine(
   "hbs",
-  handlebars({
-    extname: "hbs",
-    layoutsDir: `${__dirname}/../views/layouts/`,
-    partialsDir: `${__dirname}/../views/partials/`,
-    defaultLayout: "main",
-    helpers: {
-      ...require("handlebars-helpers")(),
-      jsonPretty: (context: any) => JSON.stringify(context, null, 2),
-      onlyNodes: filterNodesByGroups,
-      toUiNodePartial,
-      getNodeLabel: getNodeLabel,
-    },
-  }),
+  hbs
 )
 
 registerStaticRoutes(app)
@@ -74,8 +79,6 @@ registerSettingsRoute(app)
 registerVerificationRoute(app)
 registerWelcomeRoute(app)
 registerErrorRoute(app)
-
-app.use(i18nextMiddleware.handle(i18next))
 
 app.get("/", (req: Request, res: Response) => {
   res.redirect("welcome", 303)
