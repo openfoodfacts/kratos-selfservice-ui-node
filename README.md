@@ -20,8 +20,16 @@ cd kratos-selfservice-ui-node
 #i18n branch
 git checkout i18n
 
-export KRATOS_PUBLIC_URL=http://127.0.0.1:4433/
-export PORT=4455
+# if developing with Kratos Quickstart
+#
+#   export KRATOS_PUBLIC_URL=http://127.0.0.1:4433/
+#   export PORT=4455
+#
+# if you are running Ory Kratos in openfoodfacts-server
+#
+#   export KRATOS_PUBLIC_URL=http://kratos:4433/
+#   export KRATOS_BROWSER_URL=http://kratos.openfoodfacts.localhost:4433/
+
 
 npm start
 
