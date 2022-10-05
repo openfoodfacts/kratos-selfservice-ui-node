@@ -27,6 +27,9 @@ npm start
 # Start app on 
 #
 #   http://127.0.0.1:4455
+
+# Main Code in /src/index.ts
+# Translations in /src/i18n
 ```
 
 
