@@ -6,7 +6,8 @@ cd kratos
 git checkout v0.10.1
 make quickstart-dev
 
-# Next you need to kill the docker container that runs this app in order to free the ports:
+# Next, if you are already running openfoodfacts-server with kratos,
+# you need to kill the docker container that runs this app in order to free the ports:
 docker kill kratos_kratos-selfservice-ui-node_1
 
 #back to home directory
