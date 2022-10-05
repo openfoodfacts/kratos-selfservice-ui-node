@@ -23,6 +23,10 @@ export KRATOS_PUBLIC_URL=http://127.0.0.1:4433/
 export PORT=4455
 
 npm start
+
+# Start app on 
+#
+#   http://127.0.0.1:4455
 ```
 
 
