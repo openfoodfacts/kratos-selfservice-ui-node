@@ -1,4 +1,4 @@
-# OpenFoodFacts Development
+# OpenFoodFacts i18n Development
 ```shell script
 #Start ory kratos
 git clone https://github.com/ory/kratos.git
