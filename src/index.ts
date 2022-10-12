@@ -1,6 +1,7 @@
 import { filterNodesByGroups, getNodeLabel } from "@ory/integrations/ui"
 import express, { Request, Response } from "express"
-import handlebars from "express-handlebars"
+import exphbs  from "express-handlebars"
+import i18nHbsMiddleware from "./i18nHbsMiddleware"
 import * as fs from "fs"
 import * as https from "https"
 
@@ -23,7 +24,6 @@ import {
 const i18next = require('i18next')
 const i18nextMiddleware = require('i18next-http-middleware')
 const Backend = require('i18next-fs-backend')
-const HandlebarsI18n = require("handlebars-i18n");
 
 const app = express()
 
@@ -42,14 +42,14 @@ i18next
     // nonExplicitSupportedLngs: true,
     // supportedLngs: ['en', 'fr'],
     load: 'languageOnly',
-    //detection: {order: ['querystring', 'cookie']}
+    detection: {order: ['cookie', 'header'],   caches: ['cookie']}
   })
 
 app.use(middlewareLogger)
 app.set("view engine", "hbs")
 app.use(i18nextMiddleware.handle(i18next))
 
-let hbs =   handlebars({
+let hbs = exphbs.create({
   extname: "hbs",
   layoutsDir: `${__dirname}/../views/layouts/`,
   partialsDir: `${__dirname}/../views/partials/`,
@@ -61,13 +61,13 @@ let hbs =   handlebars({
     toUiNodePartial,
     getNodeLabel: getNodeLabel,
   },
-})
+}) as any
 
-HandlebarsI18n.init(hbs);
+app.use(i18nHbsMiddleware(hbs.handlebars))
 
 app.engine(
   "hbs",
-  hbs
+  hbs.engine
 )
 
 registerStaticRoutes(app)
