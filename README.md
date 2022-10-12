@@ -33,12 +33,20 @@ git checkout i18n
 
 npm start
 
-# Start app on 
+# Start app on
 #
 #   http://127.0.0.1:4455
 
 # Main Code in /src/index.ts
 # Translations in /src/i18n
+
+# Or with docker (here in the context of kratos base install):
+docker run --rm \
+  --name kratos_ui -v $(pwd):/code -w /code
+  -e KRATOS_BROWSER_URL=http://127.0.0.1:4433/ -e KRATOS_PUBLIC_URL=http://kratos:4433
+  --network kratos_intranet \
+  -e PORT=4455 -p 127.0.0.1:4455:4455 \
+  node:current npm start
 ```
 
 
