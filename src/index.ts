@@ -1,6 +1,7 @@
 import { filterNodesByGroups, getNodeLabel } from "@ory/integrations/ui"
 import express, { Request, Response } from "express"
-import handlebars from "express-handlebars"
+import exphbs  from "express-handlebars"
+import i18nHbsMiddleware from "./i18nHbsMiddleware"
 import * as fs from "fs"
 import * as https from "https"
 
@@ -20,26 +21,53 @@ import {
   registerWelcomeRoute,
 } from "./routes"
 
+const i18next = require('i18next')
+const i18nextMiddleware = require('i18next-http-middleware')
+const Backend = require('i18next-fs-backend')
+
 const app = express()
+
+i18next
+  .use(Backend)
+  // .use(languageDetector)
+  .use(i18nextMiddleware.LanguageDetector)
+  .init({
+    debug: true,
+    backend: {
+      // eslint-disable-next-line no-path-concat
+      loadPath: __dirname + '/i18n/{{lng}}/{{ns}}.json'
+    },
+    fallbackLng: 'en',
+    preload: ['en', 'fr'],
+    // nonExplicitSupportedLngs: true,
+    // supportedLngs: ['en', 'fr'],
+    load: 'languageOnly',
+    detection: {order: ['cookie', 'header'],   caches: ['cookie']}
+  })
 
 app.use(middlewareLogger)
 app.set("view engine", "hbs")
+app.use(i18nextMiddleware.handle(i18next))
+
+let hbs = exphbs.create({
+  extname: "hbs",
+  layoutsDir: `${__dirname}/../views/layouts/`,
+  partialsDir: `${__dirname}/../views/partials/`,
+  defaultLayout: "main",
+  helpers: {
+    ...require("handlebars-helpers")(),
+    jsonPretty: (context: any) => JSON.stringify(context, null, 2),
+    onlyNodes: filterNodesByGroups,
+    toUiNodePartial,
+    getNodeLabel: getNodeLabel,
+  },
+}) as any
+
+app.use(i18nHbsMiddleware(hbs.handlebars))
 
 app.engine(
   "hbs",
-  handlebars({
-    extname: "hbs",
-    layoutsDir: `${__dirname}/../views/layouts/`,
-    partialsDir: `${__dirname}/../views/partials/`,
-    defaultLayout: "main",
-    helpers: {
-      ...require("handlebars-helpers")(),
-      jsonPretty: (context: any) => JSON.stringify(context, null, 2),
-      onlyNodes: filterNodesByGroups,
-      toUiNodePartial,
-      getNodeLabel: getNodeLabel,
-    },
-  }),
+  hbs.engine
 )
 
 registerStaticRoutes(app)

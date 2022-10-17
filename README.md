@@ -1,3 +1,55 @@
+# OpenFoodFacts i18n Development
+```shell script
+#Start Ory Kratos Quickstart
+git clone https://github.com/ory/kratos.git
+cd kratos
+git checkout v0.10.1
+make quickstart-dev
+
+# Next, if you are already running openfoodfacts-server with kratos or running kratos quickstart,
+# you need to kill the docker container that runs this app in order to free the ports:
+docker kill kratos_kratos-selfservice-ui-node_1
+
+#back to home directory
+cd
+
+#Start UI
+git clone https://github.com/openfoodfacts/kratos-selfservice-ui-node.git
+cd kratos-selfservice-ui-node
+
+#i18n branch
+git checkout i18n
+
+# if developing with Kratos Quickstart
+#
+#   export KRATOS_PUBLIC_URL=http://127.0.0.1:4433/
+#   export PORT=4455
+#
+# if you are running Ory Kratos in openfoodfacts-server
+#
+#   export KRATOS_PUBLIC_URL=http://kratos:4433/
+#   export KRATOS_BROWSER_URL=http://kratos.openfoodfacts.localhost:4433/
+
+
+npm start
+
+# Start app on
+#
+#   http://127.0.0.1:4455
+
+# Main Code in /src/index.ts
+# Translations in /src/i18n
+
+# Or with docker (here in the context of kratos base install):
+docker run --rm \
+  --name kratos_ui -v $(pwd):/code -w /code
+  -e KRATOS_BROWSER_URL=http://127.0.0.1:4433/ -e KRATOS_PUBLIC_URL=http://kratos:4433 \
+  --network kratos_intranet \
+  -e PORT=4455 -p 127.0.0.1:4455:4455 \
+  node:current npm start
+```
+
+
 # Ory Kratos NodeJS / ExpressJS User Interface Reference Implementation
 
 [![tests](https://github.com/ory/kratos-selfservice-ui-node/actions/workflows/test.yml/badge.svg)](https://github.com/ory/kratos-selfservice-ui-node/actions/workflows/test.yml)

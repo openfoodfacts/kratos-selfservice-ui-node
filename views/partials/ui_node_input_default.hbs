@@ -2,7 +2,7 @@
   class="text-input-fieldset"
   data-testid="node/input/{{attributes.name}}">
   <label>
-    <span class="typography-h3">{{getNodeLabel .}}{{#if attributes.required}}
+    <span class="typography-h3">{{__ (getNodeLabel .)}}{{#if attributes.required}}
       <span class="required-indicator">*</span>{{/if}}
     </span>
     <input
@@ -10,7 +10,7 @@
       name="{{attributes.name}}"
       type="{{attributes.type}}"
       value="{{attributes.value}}"
-      placeholder="{{getNodeLabel .}}"
+      placeholder="{{__ (getNodeLabel .)}}"
       {{#if attributes.disabled}}disabled{{/if}}
     />
   </label>
