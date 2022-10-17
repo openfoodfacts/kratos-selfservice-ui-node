@@ -43,7 +43,7 @@ npm start
 # Or with docker (here in the context of kratos base install):
 docker run --rm \
   --name kratos_ui -v $(pwd):/code -w /code
-  -e KRATOS_BROWSER_URL=http://127.0.0.1:4433/ -e KRATOS_PUBLIC_URL=http://kratos:4433
+  -e KRATOS_BROWSER_URL=http://127.0.0.1:4433/ -e KRATOS_PUBLIC_URL=http://kratos:4433 \
   --network kratos_intranet \
   -e PORT=4455 -p 127.0.0.1:4455:4455 \
   node:current npm start
